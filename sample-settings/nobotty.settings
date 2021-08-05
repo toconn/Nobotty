@@ -1,0 +1,9 @@
+# Nobotty Settings
+
+data.dir = .../data
+log.file = .../logs/app.log
+
+bot.name = Nobotty
+bot.token = 9876543210:ABCDabcd1234
+owner.name = your_name_here
+owner.id = 1234567890
