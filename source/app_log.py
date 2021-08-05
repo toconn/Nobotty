@@ -55,15 +55,9 @@ def new_logger(path):
 	return logger
 
 
-def start_logger():
-
-	settings = read_app_settings()
-	LOG_TO_CONSOLE = settings.log_to_console
-
-	return new_logger (settings.log_file)
-
-
-LOGGER = start_logger()
+settings = read_app_settings()
+LOG_TO_CONSOLE = settings.log_to_console
+LOGGER = new_logger (settings.log_file)
 
 
 ## Log Helpers #############################################

@@ -164,7 +164,7 @@ class BotCommands:
 		dispatcher.register_message_handler (self.command_show_source_repo, commands = {'git-source', 'git_source', 'git', 'github', 'gitsource', 'source', 'sourcecode', 'source_code'})
 		dispatcher.register_message_handler (self.command_show_speedsheets, commands = {'speedsheets', 'speed', 'sheet', 'sheets'})
 		dispatcher.register_message_handler (self.command_who_is_first, commands = {'who-is-first', 'who_is_first', 'who-goes-first', 'who_goes_first', 'first', 'pick'})
-		dispatcher.register_message_handler (self.command_who_knows, commands = {'who', 'who_knows'})
+		dispatcher.register_message_handler (self.command_who_knows, commands = {'who', 'who_knows', 'who-knows'})
 		# dispatcher.register_message_handler (self.command_stop, commands = {'stop', 'exit'})
 
 
