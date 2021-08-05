@@ -15,11 +15,15 @@ HELP_TEXT = """<b>Help:</b>
 /start - Start the Bot
 /status - Bot Status
 
-/git-source - Source Code on Git
+/git-source - Nobotty's Source Code on Git
+
 /speedsheets - Telegram SpeedSheets
+/dev-sheets - Developer Sheets
+/game-sheets - Game speedSheets
 
 /8-ball - Ask 🎱
 /doh - Doh!
+/glados - GLaDOS
 /jibber - Jibber Jabber
 /klaxon - Sound the Alarm!
 /llama - Llama Llama Llama l
@@ -33,6 +37,8 @@ ALT_HELP_TEXT = """<b>Alt Help:</b>
 /brick - Brick!
 /cake - Is there cake?
 /first - Who goes first?
+/hal - HAL 9000
+/nobotty-knows - Who knows?
 
 /list-simpsons - List available Simpson quotes.
 
@@ -44,10 +50,46 @@ SPEEDSHEETS_TEXT = """Telegram Speedsheets:
 <a href="https://speedsheet.io/s/aiogram">aiogram SpeedSheet</>
 """
 
+DEVELOPER_SPEEDSHEETS_TEXT = """<b>Developer Speedsheet Links:</b>
+
+<a href="https://speedsheet.io/s/dev_box">Dev Box (All Dev Sheets)</>
+
+<a href="https://speedsheet.io/s/git">Git</>
+<a href="https://speedsheet.io/s/markdown">Markdown</>
+<a href="https://speedsheet.io/s/stash">Stash</>
+
+<a href="https://speedsheet.io/s/bash">Bash Scripting</>
+<a href="https://speedsheet.io/s/unix">Unix Commands</>
+
+<a href="https://speedsheet.io/s/python">Python</>
+<a href="https://speedsheet.io/s/requests">Requests</>
+<a href="https://speedsheet.io/s/aiohttp">aiohttp</>
+<a href="https://speedsheet.io/s/aiogram">aiogram</>
+
+<a href="https://speedsheet.io/s/mysql">MySql</>
+<a href="https://speedsheet.io/s/redis">Redis</>
+
+<a href="https://speedsheet.io/s/raspberry_pi">Raspberry Pi</>
+"""
+
+GAME_SPEEDSHEETS_TEXT = """<b>Game Speedsheet Links:</b>
+
+<a href="https://speedsheet.io/s/games/games">All Game Sheets (Complete List)</>
+
+<a href="https://speedsheet.io/s/games/7_wonders">7 Wonders</>
+<a href="https://speedsheet.io/s/games/age_of_steam">Age of Steam</>
+<a href="https://speedsheet.io/s/games/castles_of_burgundy">Castles of Bugundy</>
+<a href="https://speedsheet.io/s/games/concordia">Concordia</>
+<a href="https://speedsheet.io/s/games/tabletop_simulator">Tabletop Simulator</>
+"""
+
 CAKE_PHOTO_FILE = "cake.jpg"
 DOH_PHOTO_FILE = "homer-doh.png"
+GLADOS_PHOTO_FILE = "glados.png"
+HAL_PHOTO_FILE = "hal-9000.png"
 KLAXON_AUDIO_FILE = "klaxon.wav"
 LLAMA_PHOTO_FILE = "llama.png"
+NOBOTTY_KNOWS_PHOTO_FILE = 'nobotty-knows.jpg'
 
 ANVIL_FILES = "anvil*.jpg"
 BRICK_FILES = "brick*.jpg"
@@ -78,26 +120,26 @@ CHUCK_NORRIS = [
 ]
 
 EIGHT_BALL = [
-		"It is Certain",
-		"It is decidedly so",
-		"Without a doubt",
-		"Yes definitely",
-		"You may rely on it",
-		"As I see it, yes",
-		"Most likely",
-		"Outlook good",
-		"Yes",
-		"Signs point to yes",
-		"Reply hazy, try again",
-		"Ask again later",
-		"Better not tell you now",
-		"Cannot predict now",
-		"Concentrate and ask again",
-		"Don't count on it",
-		"My reply is no",
-		"My sources say no",
-		"Outlook not so good",
-		"Very doubtful",
+		"It is Certain!",
+		"It is decidedly so!",
+		"Without a doubt!",
+		"Yes definitely!",
+		"You may rely on it.",
+		"As I see it, yes.",
+		"Most likely.",
+		"Outlook good.",
+		"Yes.",
+		"Signs point to yes.",
+		"Reply hazy, try again.",
+		"Ask again later.",
+		"Better not tell you now.",
+		"Cannot predict now.",
+		"Concentrate and ask again.",
+		"Don't count on it.",
+		"My reply is no.",
+		"My sources say no.",
+		"Outlook not so good.",
+		"Very doubtful.",
 ]
 
 MR_T = [
@@ -151,18 +193,23 @@ class BotCommands:
 		dispatcher.register_message_handler (self.command_show_alt_help, commands = {'alt_help', 'alt-help', 'alt', 'alt.help'})
 		dispatcher.register_message_handler (self.command_start, commands = {'start'})
 		dispatcher.register_message_handler (self.command_status, commands = {'status', 'stat', 'stats'})
+		dispatcher.register_message_handler (self.command_ask_eight_ball, commands = {'8-ball', '8_ball', '8', '8ball', 'ball', '🎱'})
 		dispatcher.register_message_handler (self.command_anvil, commands = {'anvil'})
 		dispatcher.register_message_handler (self.command_brick, commands = {'brick', 'brick!'})
 		dispatcher.register_message_handler (self.command_cake, commands = {'cake', 'the', 'thecakeisalie', 'the_cake_is_a_lie', 'lie'})
 		dispatcher.register_message_handler (self.command_chuck_norris, commands = {'chuck', 'norris', 'chucknorris', 'chuck_norris'})
 		dispatcher.register_message_handler (self.command_doh, commands = {'doh', 'doh!'})
-		dispatcher.register_message_handler (self.command_ask_eight_ball, commands = {'8-ball', '8_ball', '8', '8ball', 'ball', '🎱'})
+		dispatcher.register_message_handler (self.command_glados, commands = {'glados'})
+		dispatcher.register_message_handler (self.command_hal, commands = {'hal', 'hal9000', 'hal-9000'})
 		dispatcher.register_message_handler (self.command_jibber_jabber, commands = {'jibber', 'jabber', 'jibberjabber', 'jibber_jabber'})
 		dispatcher.register_message_handler (self.command_klaxon, commands = {'klaxon'})
 		dispatcher.register_message_handler (self.command_list_simpsons, commands = {'list-simpsons', 'list_simpsons', 'simpsons'})
 		dispatcher.register_message_handler (self.command_llama, commands = {'llama'})
+		dispatcher.register_message_handler (self.command_nobotty_knows, commands = {'nobotty', 'nobotty-knows'})
+		dispatcher.register_message_handler (self.command_show_developer_speedsheets, commands = {'dev-sheets', 'dev-speedsheets', 'dev-stashes', 'dev-stash', 'dev-box', 'dev', 'devs'})
+		dispatcher.register_message_handler (self.command_show_game_speedsheets, commands = {'game-sheets', 'game-speedsheets', 'game-stashes',' game-stash', 'games'})
 		dispatcher.register_message_handler (self.command_show_source_repo, commands = {'git-source', 'git_source', 'git', 'github', 'gitsource', 'source', 'sourcecode', 'source_code'})
-		dispatcher.register_message_handler (self.command_show_speedsheets, commands = {'speedsheets', 'speed', 'sheet', 'sheets'})
+		dispatcher.register_message_handler (self.command_show_speedsheets, commands = {'speedsheets', 'speed', 'sheet', 'sheets', 'stash', 'stashes'})
 		dispatcher.register_message_handler (self.command_who_is_first, commands = {'who-is-first', 'who_is_first', 'who-goes-first', 'who_goes_first', 'first', 'pick'})
 		dispatcher.register_message_handler (self.command_who_knows, commands = {'who', 'who_knows', 'who-knows'})
 		# dispatcher.register_message_handler (self.command_stop, commands = {'stop', 'exit'})
@@ -224,82 +271,87 @@ class BotCommands:
 			await reply (message, "<i>- Mr. T</i>")
 
 
-	async def command_klaxon(self, message):
+	async def command_glados(self, message):
+		log_command ("glados", message)
+		await self._reply_photo (message, GLADOS_PHOTO_FILE)
 
+
+	async def command_hal(self, message):
+		log_command ("hal", message)
+		await self._reply_photo (message, HAL_PHOTO_FILE)
+
+
+	async def command_klaxon(self, message):
 		log_command ("Command - klaxon", message)
 		await self._reply_audio (message, KLAXON_AUDIO_FILE)
 
 
 	async def command_list_simpsons(self, message):
-
 		log_command ("list simpsons", message)
-
 		await reply (message, "Met The Simpson:\n\n" + "\n".join (self.simpsons))
 
 
 	async def command_llama(self, message):
-
 		log_command ("llama", message)
-
 		await self._reply_photo (message, LLAMA_PHOTO_FILE)
 
 
+	async def command_nobotty_knows(self, message):
+		log_command ("nobotty knows", message)
+		await self._reply_photo (message, NOBOTTY_KNOWS_PHOTO_FILE)
+
+
 	async def command_show_alt_help(self, message):
-
 		log_command ("show alt help", message)
-
 		await reply (message, ALT_HELP_TEXT)
 
 
+	async def command_show_developer_speedsheets(self, message):
+		log_command ("show dev speedsheets", message)
+		await reply (message, DEVELOPER_SPEEDSHEETS_TEXT)
+
+
+	async def command_show_game_speedsheets(self, message):
+		log_command ("show game speedsheets", message)
+		await reply (message, GAME_SPEEDSHEETS_TEXT)
+
+
 	async def command_show_help(self, message):
-
 		log_command ("show help", message)
-
 		await reply (message, HELP_TEXT)
 
 
 	async def command_show_source_repo(self, message):
-
 		log_command ("show source repo", message)
-
 		await reply (message, 'Source on Github:\n<a href="https://github.com/toconn/nobotty">https://github.com/toconn/nobotty</a>')
 
 
 	async def command_show_speedsheets(self, message):
-
 		log_command ("show speedsheets", message)
-
 		await reply (message, SPEEDSHEETS_TEXT)
 
 
 	async def command_start(self, message):
-
 		log_command ("start", message)
-
 		await reply (message, f"'ello {message.from_user.first_name}!")
 		await reply (message, HELP_TEXT)
 
 
 	async def command_status(self, message):
-
 		log_command ("start", message)
-
-		await reply (message, f"{self.bot_name}:\nI am completely operational, and all my circuits are functioning perfectly.")
+		await self._reply_photo (message, HAL_PHOTO_FILE)
+		await reply (message, "I am completely operational, and all my circuits are functioning perfectly.")
 
 
 	async def command_stop(self, message):
-
 		print ("Stopping.")
-
 		await reply (message, "stopping.")
 		# self.dispatcher.stop_polling()
 		os.exit()
 
 
 	async def command_who_is_first(self, message):
-
 		log_command ("who is first", message)
-
 		await reply (message, pick_one_and_print (PLAYERS))
 
 
@@ -308,7 +360,10 @@ class BotCommands:
 		log_command ("Command - who knows", message)
 
 		if should_i_weighted(30):
-			await reply (message, "Nobotty knows!")
+			if should_i_weighted(30):
+				await self._reply_photo (message, NOBOTTY_KNOWS_PHOTO_FILE)
+			else:
+				await reply (message, "Nobotty knows!")
 		else:
 			await reply (message, "Nobody knows!")
 			if should_i():
