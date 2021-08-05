@@ -15,15 +15,27 @@ HELP_TEXT = """<b>Help:</b>
 /start - Start the Bot
 /status - Bot Status
 
-/git_source - Source Code on Git
+/git-source - Source Code on Git
 /speedsheets - Telegram SpeedSheets
 
+/8-ball - Ask 🎱
 /doh - Doh!
 /jibber - Jibber Jabber
 /klaxon - Sound the Alarm!
-/llama - Llama Llama Llama
+/llama - Llama Llama Llama l
 /norris - Chuck Norris
-/who_knows - Who knows?
+/who-knows - Who knows?
+"""
+
+ALT_HELP_TEXT = """<b>Alt Help:</b>
+
+/anvil - Anvil Rocks!
+/brick - Brick!
+/cake - Is there cake?
+/first - Who goes first?
+
+/list-simpsons - List available Simpson quotes.
+
 """
 
 SPEEDSHEETS_TEXT = """Telegram Speedsheets:
@@ -36,6 +48,10 @@ CAKE_PHOTO_FILE = "cake.jpg"
 DOH_PHOTO_FILE = "homer-doh.png"
 KLAXON_AUDIO_FILE = "klaxon.wav"
 LLAMA_PHOTO_FILE = "llama.png"
+
+ANVIL_FILES = "anvil*.jpg"
+BRICK_FILES = "brick*.jpg"
+SIMPSON_FILES = "simpson*.wav"
 
 CHUCK_NORRIS = [
 		'Chuck Norris died 30 years ago. Death just hasn\'t had the courage to tell him yet.',
@@ -61,6 +77,29 @@ CHUCK_NORRIS = [
 		'There used to be a street called Chuck Norris but they changed the name because nobody crosses Chuck Norris and lives.'
 ]
 
+EIGHT_BALL = [
+		"It is Certain",
+		"It is decidedly so",
+		"Without a doubt",
+		"Yes definitely",
+		"You may rely on it",
+		"As I see it, yes",
+		"Most likely",
+		"Outlook good",
+		"Yes",
+		"Signs point to yes",
+		"Reply hazy, try again",
+		"Ask again later",
+		"Better not tell you now",
+		"Cannot predict now",
+		"Concentrate and ask again",
+		"Don't count on it",
+		"My reply is no",
+		"My sources say no",
+		"Outlook not so good",
+		"Very doubtful",
+]
+
 MR_T = [
 		'I believe in the Golden Rule - The Man with the Gold... Rules.',
 		'Somedays you eat the bear, somedays the bear eats you.',
@@ -76,9 +115,15 @@ MR_T = [
 		'People ask me what the "T" stands for in my name. If you\'re a man, the "T" stands for tough. If you\'re a woman or child, it stands for tender!'
 ]
 
+PLAYERS = [
+		'Bill',
+		'Marco',
+		'Tim',
+ 	]
 
-def read_simpsons_files(data_directory):
-	return filter (listdir (data_directory), "simpson*.wav")
+
+def read_files (data_dir, file_filter):
+	return filter (listdir (data_dir), file_filter)
 
 
 ## Bot Commands ###########################################
@@ -93,7 +138,9 @@ class BotCommands:
 		self.bot_name = settings.bot_name
 		self.data_dir = settings.data_dir
 
-		self.simpsons = read_simpsons_files (self.data_dir)
+		self.anvil = read_files(self.data_dir, ANVIL_FILES)
+		self.brick = read_files(self.data_dir, BRICK_FILES)
+		self.simpsons = read_files(self.data_dir, SIMPSON_FILES)
 
 		self._configure_commands (dispatcher)
 
@@ -101,17 +148,22 @@ class BotCommands:
 	def _configure_commands(self, dispatcher):
 
 		dispatcher.register_message_handler (self.command_show_help, commands = {'help'})
+		dispatcher.register_message_handler (self.command_show_alt_help, commands = {'alt_help', 'alt-help', 'alt', 'alt.help'})
 		dispatcher.register_message_handler (self.command_start, commands = {'start'})
 		dispatcher.register_message_handler (self.command_status, commands = {'status', 'stat', 'stats'})
+		dispatcher.register_message_handler (self.command_anvil, commands = {'anvil'})
+		dispatcher.register_message_handler (self.command_brick, commands = {'brick', 'brick!'})
 		dispatcher.register_message_handler (self.command_cake, commands = {'cake', 'the', 'thecakeisalie', 'the_cake_is_a_lie', 'lie'})
 		dispatcher.register_message_handler (self.command_chuck_norris, commands = {'chuck', 'norris', 'chucknorris', 'chuck_norris'})
 		dispatcher.register_message_handler (self.command_doh, commands = {'doh', 'doh!'})
+		dispatcher.register_message_handler (self.command_ask_eight_ball, commands = {'8-ball', '8_ball', '8', '8ball', 'ball', '🎱'})
 		dispatcher.register_message_handler (self.command_jibber_jabber, commands = {'jibber', 'jabber', 'jibberjabber', 'jibber_jabber'})
 		dispatcher.register_message_handler (self.command_klaxon, commands = {'klaxon'})
-		dispatcher.register_message_handler (self.command_list_simpsons, commands = {'list_simpsons', 'simpsons'})
+		dispatcher.register_message_handler (self.command_list_simpsons, commands = {'list-simpsons', 'list_simpsons', 'simpsons'})
 		dispatcher.register_message_handler (self.command_llama, commands = {'llama'})
-		dispatcher.register_message_handler (self.command_show_source_repo, commands = {'git_source', 'git', 'github', 'gitsource', 'source', 'sourcecode', 'source_code'})
+		dispatcher.register_message_handler (self.command_show_source_repo, commands = {'git-source', 'git_source', 'git', 'github', 'gitsource', 'source', 'sourcecode', 'source_code'})
 		dispatcher.register_message_handler (self.command_show_speedsheets, commands = {'speedsheets', 'speed', 'sheet', 'sheets'})
+		dispatcher.register_message_handler (self.command_who_is_first, commands = {'who-is-first', 'who_is_first', 'who-goes-first', 'who_goes_first', 'first', 'pick'})
 		dispatcher.register_message_handler (self.command_who_knows, commands = {'who', 'who_knows'})
 		# dispatcher.register_message_handler (self.command_stop, commands = {'stop', 'exit'})
 
@@ -120,7 +172,21 @@ class BotCommands:
 
 		log_command ("cake", message)
 
-		await reply_photo (message, self._path(CAKE_PHOTO_FILE))
+		await self._reply_photo (message, CAKE_PHOTO_FILE)
+
+
+	async def command_anvil(self, message):
+
+		log_command ("anvil", message)
+
+		await self._reply_photo (message, pick_one_and_print (self.anvil))
+
+
+	async def command_brick(self, message):
+
+		log_command ("brick", message)
+
+		await self._reply_photo (message, pick_one_and_print (self.brick))
 
 
 	async def command_chuck_norris(self, message):
@@ -134,8 +200,15 @@ class BotCommands:
 
 		log_command ("doh", message)
 
-		await reply_photo (message, self._path(DOH_PHOTO_FILE))
-		await reply_audio (message, self._path (pick_one_and_print(self.simpsons)))
+		await self._reply_photo (message, DOH_PHOTO_FILE)
+		await self._reply_audio (message, pick_one_and_print(self.simpsons))
+
+
+	async def command_ask_eight_ball(self, message):
+
+		log_command ("ask 8 ball", message)
+
+		await reply (message, "🎱  " + pick_one_and_print (EIGHT_BALL))
 
 
 	async def command_jibber_jabber(self, message):
@@ -154,7 +227,7 @@ class BotCommands:
 	async def command_klaxon(self, message):
 
 		log_command ("Command - klaxon", message)
-		await reply_audio (message, self._path(KLAXON_AUDIO_FILE))
+		await self._reply_audio (message, KLAXON_AUDIO_FILE)
 
 
 	async def command_list_simpsons(self, message):
@@ -168,7 +241,14 @@ class BotCommands:
 
 		log_command ("llama", message)
 
-		await reply_photo (message, self._path(LLAMA_PHOTO_FILE))
+		await self._reply_photo (message, LLAMA_PHOTO_FILE)
+
+
+	async def command_show_alt_help(self, message):
+
+		log_command ("show alt help", message)
+
+		await reply (message, ALT_HELP_TEXT)
 
 
 	async def command_show_help(self, message):
@@ -216,17 +296,35 @@ class BotCommands:
 		os.exit()
 
 
+	async def command_who_is_first(self, message):
+
+		log_command ("who is first", message)
+
+		await reply (message, pick_one_and_print (PLAYERS))
+
+
 	async def command_who_knows(self, message):
 
 		log_command ("Command - who knows", message)
 
-		await reply (message, "Nobody knows!")
-		if should_i():
-			await reply (message, "Maybe aliens?")
+		if should_i_weighted(30):
+			await reply (message, "Nobotty knows!")
+		else:
+			await reply (message, "Nobody knows!")
+			if should_i():
+				await reply (message, "Maybe aliens?")
 
 
 	def _path(self, file_name):
-
 		return join (self.data_dir, file_name)
+
+	
+	async def _reply_audio (self, message, file_name):
+		await reply_audio (message, self._path(file_name))
+
+	
+	async def _reply_photo (self, message, file_name):
+		await reply_photo (message, self._path(file_name))
+
 
 

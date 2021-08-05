@@ -16,13 +16,13 @@ from bot_commands import BotCommands
 async def notify_started(bot, settings):
 
 	await send_message (bot, settings.owner, "Bot is up.")
-	log ("Bot started.")
+	log (settings.bot_name + " started.")
 
 
 async def notify_stopped(bot, settings):
 
 	await send_message (bot, settings.owner, "Bot stopped.")
-	log ("Bot stopped.")
+	log (settings.bot_name + " stopped.")
 
 
 ## Mair ####################################################
