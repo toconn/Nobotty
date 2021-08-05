@@ -58,7 +58,20 @@ def _not_found(self, index, search):
     return index == -1
 
 
-def _read_to_dict(file_path):
+def _to_key_value(line: str) -> ():
+
+    if SEPARATOR_1 in line:
+        key, value = line.split(SEPARATOR_1, 1)
+    else:
+        key, value = line.split(SEPARATOR_2, 1)
+
+    key = _normalize_key(key)
+    value = _normalize_value(value)
+
+    return key, value
+
+
+def read_to_dict(file_path):
 
     settings = {}
 
@@ -76,40 +89,21 @@ def _read_to_dict(file_path):
     return settings
 
 
-def _to_key_value(line: str) -> ():
-
-    if SEPARATOR_1 in line:
-        key, value = line.split(SEPARATOR_1, 1)
-    else:
-        key, value = line.split(SEPARATOR_2, 1)
-
-    key = _normalize_key(key)
-    value = _normalize_value(value)
-
-    return key, value
-
-
 ## Validation ##############################################
 
-def _validate_section(errors, config, section_name, section_properties):
-    section = config[section_name]
-    for property_name in section_properties:
-        if property_name not in section:
-            errors.append(f"Section [{section_name}] is missing property '{property_name}'")
+def validate(settings, required_settings):
+        """ Validates that the configuration
+            contains all the required sections
+            and properties.
+        """
+        errors = []
 
-def validate(config, required_settings):
-    """ Validates that the configuration
-        contains all the required sections
-        and properties.
-    """
-    errors = []
-    for section_name, section_properties in required_properties:
-        if not config.has_section(section_name):
-            errors.append(f"Section [{section_name}] is missing. Also requires properties {', '.join(section_properties)}.")
-        else:
-            _validate_section(errors, config, section_name, section_properties)
-    if errors:
-        raise ValueError('\n'.join(errors))
+        for name in required_settings:
+            if name not in settings:
+                errors.append(f"Setting '{name}' is missing.")
+
+        if errors:
+            raise ValueError('\n'.join(errors))
 
 
 ## Settings ################################################
@@ -157,7 +151,7 @@ class Settings:
 
 
     def read(self, file_path):
-        self._settings = _read_to_dict(file_path)
+        self._settings = read_to_dict(file_path)
 
 
     def validate(self, required_settings):

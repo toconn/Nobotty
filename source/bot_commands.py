@@ -16,13 +16,13 @@ HELP_TEXT = """<b>Help:</b>
 /status - Bot Status
 
 /git_source - Source Code on Git
+/speedsheets - Telegram SpeedSheets
 
 /doh - Doh!
-/jibber - Some Jibber Jabber!
-/klaxon - Klaxon!
-/llama - Llama!
+/jibber - Jibber Jabber
+/klaxon - Sound the Alarm!
+/llama - Llama Llama Llama
 /norris - Chuck Norris
-/speedsheets - Telegram SpeedSheets
 /who_knows - Who knows?
 """
 
