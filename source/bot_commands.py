@@ -54,35 +54,35 @@ SPEEDSHEETS_TEXT = """Telegram Speedsheets:
 
 DEVELOPER_SPEEDSHEETS_TEXT = """<b>Developer Speedsheet Links:</b>
 
-<a href="https://speedsheet.io/s/dev_box">Dev Box (All Dev Sheets)</>
+Dev Box (All Dev Sheets)   <a href="https://speedsheet.io/s/dev_box">https://speedsheet.io/s/dev_box</>
 
-<a href="https://speedsheet.io/s/git">Git</>
-<a href="https://speedsheet.io/s/markdown">Markdown</>
-<a href="https://speedsheet.io/s/stash">Stash</>
+Git   <a href="https://speedsheet.io/s/git">https://speedsheet.io/s/git</>
+Markdown   <a href="https://speedsheet.io/s/markdown">https://speedsheet.io/s/markdown</>
+Stash   <a href="https://speedsheet.io/s/stash">https://speedsheet.io/s/stash</>
 
-<a href="https://speedsheet.io/s/bash">Bash Scripting</>
-<a href="https://speedsheet.io/s/unix">Unix Commands</>
+Bash Scripting   <a href="https://speedsheet.io/s/bash">https://speedsheet.io/s/bash</>
+Unix Commands   <a href="https://speedsheet.io/s/unix">https://speedsheet.io/s/unix</>
 
-<a href="https://speedsheet.io/s/python">Python</>
-<a href="https://speedsheet.io/s/requests">Requests</>
-<a href="https://speedsheet.io/s/aiohttp">aiohttp</>
-<a href="https://speedsheet.io/s/aiogram">aiogram</>
+Python   <a href="https://speedsheet.io/s/python">https://speedsheet.io/s/python</>
+Requests   <a href="https://speedsheet.io/s/requests">https://speedsheet.io/s/requests</>
+aiohttp   <a href="https://speedsheet.io/s/aiohttp">https://speedsheet.io/s/aiohttp</>
+aiogram   <a href="https://speedsheet.io/s/aiogram">https://speedsheet.io/s/aiogram</>
 
-<a href="https://speedsheet.io/s/mysql">MySql</>
-<a href="https://speedsheet.io/s/redis">Redis</>
+MySql   <a href="https://speedsheet.io/s/mysql">https://speedsheet.io/s/mysql</>
+Redis   <a href="https://speedsheet.io/s/redis">https://speedsheet.io/s/redis</>
 
-<a href="https://speedsheet.io/s/raspberry_pi">Raspberry Pi</>
+Raspberry Pi   <a href="https://speedsheet.io/s/raspberry_pi">https://speedsheet.io/s/raspberry_pi</>
 """
 
 GAME_SPEEDSHEETS_TEXT = """<b>Game Speedsheet Links:</b>
 
-<a href="https://speedsheet.io/s/games/games">All Game Sheets (Complete List)</>
+All Game Sheets (Complete List)   <a href="https://speedsheet.io/s/games/games">https://speedsheet.io/s/games/games</>
 
-<a href="https://speedsheet.io/s/games/7_wonders">7 Wonders</>
-<a href="https://speedsheet.io/s/games/age_of_steam">Age of Steam</>
-<a href="https://speedsheet.io/s/games/castles_of_burgundy">Castles of Bugundy</>
-<a href="https://speedsheet.io/s/games/concordia">Concordia</>
-<a href="https://speedsheet.io/s/games/tabletop_simulator">Tabletop Simulator</>
+7 Wonders   <a href="https://speedsheet.io/s/games/7_wonders">https://speedsheet.io/s/games/7_wonders</>
+Age of Steam   <a href="https://speedsheet.io/s/games/age_of_steam">https://speedsheet.io/s/games/age_of_steam</>
+Castles of Bugundy   <a href="https://speedsheet.io/s/games/castles_of_burgundy">https://speedsheet.io/s/games/castles_of_burgundy</>
+Concordia   <a href="https://speedsheet.io/s/games/concordia">https://speedsheet.io/s/games/concordia</>
+Tabletop Simulator   <a href="https://speedsheet.io/s/games/tabletop_simulator">https://speedsheet.io/s/games/tabletop_simulator</>
 """
 
 BANANA_PHOTO_FILE = "banana.jpg"
