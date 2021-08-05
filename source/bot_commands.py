@@ -23,7 +23,6 @@ HELP_TEXT = """<b>Help:</b>
 
 /8-ball - Ask 🎱
 /doh - Doh!
-/glados - GLaDOS
 /jibber - Jibber Jabber
 /klaxon - Sound the Alarm!
 /llama - Llama Llama Llama l
@@ -34,9 +33,12 @@ HELP_TEXT = """<b>Help:</b>
 ALT_HELP_TEXT = """<b>Alt Help:</b>
 
 /anvil - Anvil Rocks!
+/banana - Bananas are good!
+/banana-for-scale - Banana for scale.
 /brick - Brick!
 /cake - Is there cake?
 /first - Who goes first?
+/glados - GLaDOS
 /hal - HAL 9000
 /nobotty-knows - Who knows?
 
@@ -83,6 +85,9 @@ GAME_SPEEDSHEETS_TEXT = """<b>Game Speedsheet Links:</b>
 <a href="https://speedsheet.io/s/games/tabletop_simulator">Tabletop Simulator</>
 """
 
+BANANA_PHOTO_FILE = "banana.jpg"
+BANANA_FOR_SCALE_PHOTO_FILE = "banana-for-scale.png"
+DOH_PHOTO_FILE = "homer-doh.png"
 CAKE_PHOTO_FILE = "cake.jpg"
 DOH_PHOTO_FILE = "homer-doh.png"
 GLADOS_PHOTO_FILE = "glados.png"
@@ -195,6 +200,8 @@ class BotCommands:
 		dispatcher.register_message_handler (self.command_status, commands = {'status', 'stat', 'stats'})
 		dispatcher.register_message_handler (self.command_ask_eight_ball, commands = {'8-ball', '8_ball', '8', '8ball', 'ball', '🎱'})
 		dispatcher.register_message_handler (self.command_anvil, commands = {'anvil'})
+		dispatcher.register_message_handler (self.command_banana, commands = {'banana'})
+		dispatcher.register_message_handler (self.command_banana_for_scale, commands = {'banana-for-scale', 'banana-for', 'for-scale'})
 		dispatcher.register_message_handler (self.command_brick, commands = {'brick', 'brick!'})
 		dispatcher.register_message_handler (self.command_cake, commands = {'cake', 'the', 'thecakeisalie', 'the_cake_is_a_lie', 'lie'})
 		dispatcher.register_message_handler (self.command_chuck_norris, commands = {'chuck', 'norris', 'chucknorris', 'chuck_norris'})
@@ -216,45 +223,43 @@ class BotCommands:
 
 
 	async def command_cake(self, message):
-
 		log_command ("cake", message)
-
 		await self._reply_photo (message, CAKE_PHOTO_FILE)
 
 
 	async def command_anvil(self, message):
-
 		log_command ("anvil", message)
-
 		await self._reply_photo (message, pick_one_and_print (self.anvil))
 
 
+	async def command_banana(self, message):
+		log_command ("banana", message)
+		await self._reply_photo (message, BANANA_PHOTO_FILE)
+
+
+	async def command_banana_for_scale(self, message):
+		log_command ("banana for scale", message)
+		await self._reply_photo (message, BANANA_FOR_SCALE_PHOTO_FILE)
+
+
 	async def command_brick(self, message):
-
 		log_command ("brick", message)
-
 		await self._reply_photo (message, pick_one_and_print (self.brick))
 
 
 	async def command_chuck_norris(self, message):
-
 		log_command ("chuck norris", message)
-
 		await reply (message, pick_one_and_print (CHUCK_NORRIS))
 
 
 	async def command_doh(self, message):
-
 		log_command ("doh", message)
-
 		await self._reply_photo (message, DOH_PHOTO_FILE)
 		await self._reply_audio (message, pick_one_and_print(self.simpsons))
 
 
 	async def command_ask_eight_ball(self, message):
-
 		log_command ("ask 8 ball", message)
-
 		await reply (message, "🎱  " + pick_one_and_print (EIGHT_BALL))
 
 
