@@ -38,9 +38,13 @@ ALT_HELP_TEXT = """<b>Alt Help:</b>
 /brick - Brick!
 /cake - Is there cake?
 /first - Who goes first?
+/evil-bot
 /glados - GLaDOS
 /hal - HAL 9000
+/insufficient-data - Insufficient Data!
 /nobotty-knows - Who knows?
+/sensible-chuckle
+/unsupervised
 
 /list-simpsons - List available Simpson quotes.
 
@@ -206,17 +210,21 @@ class BotCommands:
 		dispatcher.register_message_handler (self.command_cake, commands = {'cake', 'the', 'thecakeisalie', 'the_cake_is_a_lie', 'lie'})
 		dispatcher.register_message_handler (self.command_chuck_norris, commands = {'chuck', 'norris', 'chucknorris', 'chuck_norris'})
 		dispatcher.register_message_handler (self.command_doh, commands = {'doh', 'doh!'})
+		dispatcher.register_message_handler (self.command_evil_bot, commands = {'bot', 'evil', 'evil-bot'})
 		dispatcher.register_message_handler (self.command_glados, commands = {'glados'})
 		dispatcher.register_message_handler (self.command_hal, commands = {'hal', 'hal9000', 'hal-9000'})
+		dispatcher.register_message_handler (self.command_insufficient_data, commands = {'insufficient', 'insufficient-data', 'data'})
 		dispatcher.register_message_handler (self.command_jibber_jabber, commands = {'jibber', 'jabber', 'jibberjabber', 'jibber_jabber'})
 		dispatcher.register_message_handler (self.command_klaxon, commands = {'klaxon'})
 		dispatcher.register_message_handler (self.command_list_simpsons, commands = {'list-simpsons', 'list_simpsons', 'simpsons'})
 		dispatcher.register_message_handler (self.command_llama, commands = {'llama'})
 		dispatcher.register_message_handler (self.command_nobotty_knows, commands = {'nobotty', 'nobotty-knows'})
+		dispatcher.register_message_handler (self.command_sensible_chuckle, commands = {'sensible', 'sensible-chuckle', 'chuckle'})
 		dispatcher.register_message_handler (self.command_show_developer_speedsheets, commands = {'dev-sheets', 'dev-speedsheets', 'dev-stashes', 'dev-stash', 'dev-box', 'dev', 'devs'})
 		dispatcher.register_message_handler (self.command_show_game_speedsheets, commands = {'game-sheets', 'game-speedsheets', 'game-stashes',' game-stash', 'games'})
 		dispatcher.register_message_handler (self.command_show_source_repo, commands = {'git-source', 'git_source', 'git', 'github', 'gitsource', 'source', 'sourcecode', 'source_code'})
-		dispatcher.register_message_handler (self.command_show_speedsheets, commands = {'speedsheets', 'speed', 'sheet', 'sheets', 'stash', 'stashes'})
+		dispatcher.register_message_handler (self.command_who_knows, commands = {'who', 'who_knows', 'who-knows'})
+		dispatcher.register_message_handler (self.command_unsupervised, commands = {'defence', 'unsupervised'})
 		dispatcher.register_message_handler (self.command_who_is_first, commands = {'who-is-first', 'who_is_first', 'who-goes-first', 'who_goes_first', 'first', 'pick'})
 		dispatcher.register_message_handler (self.command_who_knows, commands = {'who', 'who_knows', 'who-knows'})
 		# dispatcher.register_message_handler (self.command_stop, commands = {'stop', 'exit'})
@@ -242,6 +250,11 @@ class BotCommands:
 		await self._reply_photo (message, BANANA_FOR_SCALE_PHOTO_FILE)
 
 
+	async def command_evil_bot(self, message):
+		log_command ("banana for scale", message)
+		await self._reply_photo (message, BANANA_FOR_SCALE_PHOTO_FILE)
+
+
 	async def command_brick(self, message):
 		log_command ("brick", message)
 		await self._reply_photo (message, pick_one_and_print (self.brick))
@@ -261,6 +274,14 @@ class BotCommands:
 	async def command_ask_eight_ball(self, message):
 		log_command ("ask 8 ball", message)
 		await reply (message, "🎱  " + pick_one_and_print (EIGHT_BALL))
+
+
+	async def command_evil_bot(self, message):
+		log_command ("evil bot", message)
+		if should_i():
+			await self._reply_photo (message, GLADOS_PHOTO_FILE)
+		else:
+			await self._reply_photo (message, HAL_PHOTO_FILE)
 
 
 	async def command_jibber_jabber(self, message):
@@ -286,6 +307,11 @@ class BotCommands:
 		await self._reply_photo (message, HAL_PHOTO_FILE)
 
 
+	async def command_insufficient_data(self, message):
+		log_command ("insufficient data", message)
+		await self._reply_photo (message, "insufficient-data.jpg")
+
+
 	async def command_klaxon(self, message):
 		log_command ("Command - klaxon", message)
 		await self._reply_audio (message, KLAXON_AUDIO_FILE)
@@ -304,6 +330,11 @@ class BotCommands:
 	async def command_nobotty_knows(self, message):
 		log_command ("nobotty knows", message)
 		await self._reply_photo (message, NOBOTTY_KNOWS_PHOTO_FILE)
+
+
+	async def command_sensible_chuckle(self, message):
+		log_command ("sensible chuckle", message)
+		await self._reply_photo (message, "sensible-chuckle.gif")
 
 
 	async def command_show_alt_help(self, message):
@@ -344,7 +375,6 @@ class BotCommands:
 
 	async def command_status(self, message):
 		log_command ("start", message)
-		await self._reply_photo (message, HAL_PHOTO_FILE)
 		await reply (message, "I am completely operational, and all my circuits are functioning perfectly.")
 
 
@@ -353,6 +383,11 @@ class BotCommands:
 		await reply (message, "stopping.")
 		# self.dispatcher.stop_polling()
 		os.exit()
+
+
+	async def command_unsupervised(self, message):
+		log_command ("unsupervised", message)
+		await self._reply_photo (message, "unsupervised.png")
 
 
 	async def command_who_is_first(self, message):
@@ -377,6 +412,10 @@ class BotCommands:
 
 	def _path(self, file_name):
 		return join (self.data_dir, file_name)
+
+	
+	async def _reply_animation (self, message, file_name):
+		await reply_animation (message, self._path(file_name))
 
 	
 	async def _reply_audio (self, message, file_name):

@@ -58,17 +58,27 @@ async def reply (message, response):
 
 
 @report_error
+async def reply_animation (message, audio_file):
+
+	with open (audio_file, 'rb') as file:
+		await message.answer_animation(file)
+
+
+@report_error
 async def reply_audio (message, audio_file):
 
 	with open (audio_file, 'rb') as file:
-		audio = file.read()
-		await message.answer_audio(audio)
+		await message.answer_audio(file)
 
 
 @report_error
 async def reply_photo (message, photo_file):
 	with open (photo_file, 'rb') as file:
-		await message.answer_photo(file)
+
+		if photo_file.endswith(".gif"):
+			await message.answer_animation(file)
+		else:
+			await message.answer_photo(file)
 
 
 @report_error
