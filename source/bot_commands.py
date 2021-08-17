@@ -4,7 +4,9 @@ from os import listdir
 from os.path import join
 from fnmatch import filter
 from sys import exit
+from datetime import datetime
 
+from shared.random import Random
 from shared.utils import *
 from bot_utils import *
 
@@ -14,20 +16,22 @@ HELP_TEXT = """<b>Help:</b>
 /help - This Message
 /start - Start the Bot
 /status - Bot Status
+/uptime - Bot Uptime
 
-/git-source - Nobotty's Source Code on Git
+/source - Nobotty's Source Code on Git
 
 /speedsheets - Telegram SpeedSheets
-/dev-sheets - Developer Sheets
-/game-sheets - Game speedSheets
+/dev - Developer Sheets
+/game - Game speedSheets
 
 /8-ball - Ask 🎱
 /doh - Doh!
 /jibber - Jibber Jabber
 /klaxon - Sound the Alarm!
-/llama - Llama Llama Llama l
+/llama - Llama Llama Llama!
 /norris - Chuck Norris
-/who-knows - Who knows?
+/tacos - Taco Tuesday
+/who - Who knows?
 """
 
 ALT_HELP_TEXT = """<b>Alt Help:</b>
@@ -103,6 +107,7 @@ NOBOTTY_KNOWS_PHOTO_FILE = 'nobotty-knows.jpg'
 ANVIL_FILES = "anvil*.jpg"
 BRICK_FILES = "brick*.jpg"
 SIMPSON_FILES = "simpson*.wav"
+TACO_FILES = "taco*.*"
 
 CHUCK_NORRIS = [
 		'Chuck Norris died 30 years ago. Death just hasn\'t had the courage to tell him yet.',
@@ -173,6 +178,9 @@ PLAYERS = [
  	]
 
 
+random = Random()
+
+
 def read_files (data_dir, file_filter):
 	return filter (listdir (data_dir), file_filter)
 
@@ -192,6 +200,9 @@ class BotCommands:
 		self.anvil = read_files(self.data_dir, ANVIL_FILES)
 		self.brick = read_files(self.data_dir, BRICK_FILES)
 		self.simpsons = read_files(self.data_dir, SIMPSON_FILES)
+		self.tacos = read_files(self.data_dir, TACO_FILES)
+
+		self._start_datetime = datetime.today()
 
 		self._configure_commands (dispatcher)
 
@@ -201,7 +212,10 @@ class BotCommands:
 		dispatcher.register_message_handler (self.command_show_help, commands = {'help'})
 		dispatcher.register_message_handler (self.command_show_alt_help, commands = {'alt_help', 'alt-help', 'alt', 'alt.help'})
 		dispatcher.register_message_handler (self.command_start, commands = {'start'})
+		# dispatcher.register_message_handler (self.command_stop, commands = {'stop', 'exit'})
 		dispatcher.register_message_handler (self.command_status, commands = {'status', 'stat', 'stats'})
+		dispatcher.register_message_handler (self.command_uptime, commands = {'up-time', 'uptime', 'server-uptime'})
+
 		dispatcher.register_message_handler (self.command_ask_eight_ball, commands = {'8-ball', '8_ball', '8', '8ball', 'ball', '🎱'})
 		dispatcher.register_message_handler (self.command_anvil, commands = {'anvil'})
 		dispatcher.register_message_handler (self.command_banana, commands = {'banana'})
@@ -209,8 +223,10 @@ class BotCommands:
 		dispatcher.register_message_handler (self.command_brick, commands = {'brick', 'brick!'})
 		dispatcher.register_message_handler (self.command_cake, commands = {'cake', 'the', 'thecakeisalie', 'the_cake_is_a_lie', 'lie'})
 		dispatcher.register_message_handler (self.command_chuck_norris, commands = {'chuck', 'norris', 'chucknorris', 'chuck_norris'})
+		dispatcher.register_message_handler (self.command_developer_speedsheets, commands = {'dev-sheets', 'dev-speedsheets', 'dev-stashes', 'dev-stash', 'dev-box', 'dev', 'devs'})
 		dispatcher.register_message_handler (self.command_doh, commands = {'doh', 'doh!'})
 		dispatcher.register_message_handler (self.command_evil_bot, commands = {'bot', 'evil', 'evil-bot'})
+		dispatcher.register_message_handler (self.command_game_speedsheets, commands = {'game-sheets', 'game-speedsheets', 'game-stashes',' game-stash', 'games'})
 		dispatcher.register_message_handler (self.command_glados, commands = {'glados'})
 		dispatcher.register_message_handler (self.command_hal, commands = {'hal', 'hal9000', 'hal-9000'})
 		dispatcher.register_message_handler (self.command_insufficient_data, commands = {'insufficient', 'insufficient-data', 'data'})
@@ -220,14 +236,11 @@ class BotCommands:
 		dispatcher.register_message_handler (self.command_llama, commands = {'llama'})
 		dispatcher.register_message_handler (self.command_nobotty_knows, commands = {'nobotty', 'nobotty-knows'})
 		dispatcher.register_message_handler (self.command_sensible_chuckle, commands = {'sensible', 'sensible-chuckle', 'chuckle'})
-		dispatcher.register_message_handler (self.command_show_developer_speedsheets, commands = {'dev-sheets', 'dev-speedsheets', 'dev-stashes', 'dev-stash', 'dev-box', 'dev', 'devs'})
-		dispatcher.register_message_handler (self.command_show_game_speedsheets, commands = {'game-sheets', 'game-speedsheets', 'game-stashes',' game-stash', 'games'})
-		dispatcher.register_message_handler (self.command_show_source_repo, commands = {'git-source', 'git_source', 'git', 'github', 'gitsource', 'source', 'sourcecode', 'source_code'})
-		dispatcher.register_message_handler (self.command_who_knows, commands = {'who', 'who_knows', 'who-knows'})
+		dispatcher.register_message_handler (self.command_source, commands = {'git-source', 'git_source', 'git', 'github', 'gitsource', 'source', 'sourcecode', 'source_code'})
+		dispatcher.register_message_handler (self.command_tacos, commands = {'tacos', 'taco', 'taco-tuesday', 'taco_tuesday'})
 		dispatcher.register_message_handler (self.command_unsupervised, commands = {'defence', 'unsupervised'})
 		dispatcher.register_message_handler (self.command_who_is_first, commands = {'who-is-first', 'who_is_first', 'who-goes-first', 'who_goes_first', 'first', 'pick'})
 		dispatcher.register_message_handler (self.command_who_knows, commands = {'who', 'who_knows', 'who-knows'})
-		# dispatcher.register_message_handler (self.command_stop, commands = {'stop', 'exit'})
 
 
 	async def command_cake(self, message):
@@ -238,6 +251,11 @@ class BotCommands:
 	async def command_anvil(self, message):
 		log_command ("anvil", message)
 		await self._reply_photo (message, pick_one_and_print (self.anvil))
+
+
+	async def command_ask_eight_ball(self, message):
+		log_command ("ask 8 ball", message)
+		await reply (message, "🎱  " + pick_one_and_print (EIGHT_BALL))
 
 
 	async def command_banana(self, message):
@@ -271,9 +289,9 @@ class BotCommands:
 		await self._reply_audio (message, pick_one_and_print(self.simpsons))
 
 
-	async def command_ask_eight_ball(self, message):
-		log_command ("ask 8 ball", message)
-		await reply (message, "🎱  " + pick_one_and_print (EIGHT_BALL))
+	async def command_developer_speedsheets(self, message):
+		log_command ("show dev speedsheets", message)
+		await reply (message, DEVELOPER_SPEEDSHEETS_TEXT)
 
 
 	async def command_evil_bot(self, message):
@@ -282,6 +300,11 @@ class BotCommands:
 			await self._reply_photo (message, GLADOS_PHOTO_FILE)
 		else:
 			await self._reply_photo (message, HAL_PHOTO_FILE)
+
+
+	async def command_game_speedsheets(self, message):
+		log_command ("show game speedsheets", message)
+		await reply (message, GAME_SPEEDSHEETS_TEXT)
 
 
 	async def command_jibber_jabber(self, message):
@@ -342,27 +365,17 @@ class BotCommands:
 		await reply (message, ALT_HELP_TEXT)
 
 
-	async def command_show_developer_speedsheets(self, message):
-		log_command ("show dev speedsheets", message)
-		await reply (message, DEVELOPER_SPEEDSHEETS_TEXT)
-
-
-	async def command_show_game_speedsheets(self, message):
-		log_command ("show game speedsheets", message)
-		await reply (message, GAME_SPEEDSHEETS_TEXT)
-
-
 	async def command_show_help(self, message):
 		log_command ("show help", message)
 		await reply (message, HELP_TEXT)
 
 
-	async def command_show_source_repo(self, message):
-		log_command ("show source repo", message)
+	async def command_source(self, message):
+		log_command ("show source", message)
 		await reply (message, 'Source on Github:\n<a href="https://github.com/toconn/nobotty">https://github.com/toconn/nobotty</a>')
 
 
-	async def command_show_speedsheets(self, message):
+	async def command_speedsheets(self, message):
 		log_command ("show speedsheets", message)
 		await reply (message, SPEEDSHEETS_TEXT)
 
@@ -385,9 +398,19 @@ class BotCommands:
 		os.exit()
 
 
+	async def command_tacos (self, message):
+		log_command ("tacos", message)
+		await self._reply_photo (message, pick_one_and_print (self.tacos))
+
+
 	async def command_unsupervised(self, message):
 		log_command ("unsupervised", message)
 		await self._reply_photo (message, "unsupervised.png")
+
+
+	async def command_uptime (self, message):
+		log_command ("uptime", message)
+		await reply (message, self._uptime_message())
 
 
 	async def command_who_is_first(self, message):
@@ -426,4 +449,6 @@ class BotCommands:
 		await reply_photo (message, self._path(file_name))
 
 
+	def _uptime_message(self):
+		return "Up Time:\n{}\n\nSince:\n{:%Y-%m-%d %H:%M:%S}".format (format_timedelta_from_now (self._start_datetime), self._start_datetime)
 
